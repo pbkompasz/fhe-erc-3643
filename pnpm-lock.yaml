@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@onchain-id/solidity':
+        specifier: ^2.2.1
+        version: 2.2.1
       extra-bigint:
         specifier: ^1.1.18
         version: 1.1.18
@@ -560,6 +563,9 @@ packages:
     resolution: {integrity: sha512-1SUf/Cg2GzGDyaf15aR9St9TWlb+XvbZXWpDx8YKs7MLzMH/BCeopv+y9vzrzgkfykCGuWOlSu3mZhj2+FQcrg==}
     engines: {node: '>=10'}
     deprecated: This functionality has been moved to @npmcli/fs
+
+  '@onchain-id/solidity@2.2.1':
+    resolution: {integrity: sha512-B54InT8yi89qlh9UVCARcfdQLVDP7Lef87B/Ww2Wn19oyEbPmlWho2EK1sgnrt/8Q0fGX/7y5rDnx3HPy28NTA==}
 
   '@openzeppelin/contracts@5.0.2':
     resolution: {integrity: sha512-ytPc6eLGcHHnapAZ9S+5qsdomhjo6QBHTDRRBFfTxXIpsicMhVPouPgmUPebZZZGX7vt9USA+Z+0M0dSVtSUEA==}
@@ -3756,6 +3762,8 @@ snapshots:
       mkdirp: 1.0.4
       rimraf: 3.0.2
     optional: true
+
+  '@onchain-id/solidity@2.2.1': {}
 
   '@openzeppelin/contracts@5.0.2': {}
 
