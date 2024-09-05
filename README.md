@@ -1,4 +1,42 @@
-# Hardhat Template [![Open in Gitpod][gitpod-badge]][gitpod] [![Github Actions][gha-badge]][gha] [![Hardhat][hardhat-badge]][hardhat] [![License: MIT][license-badge]][license]
+# ERC-3643
+
+## 
+
+The ERC-3643 token standard supports the compliant issuance and management of permissioned tokens. These tokens are issued in full compliance with the rules specified by the investors (via on-chain identity) and the offerings based on issuers' guidelines. Furthermore, control mechanisms are baked into the tokens themselves.  
+The transaction of tokenized securities and enforcement of compliance on the happens through a decentralized validator, consisting of the following parts:
+  - an identity management system
+  - a set of validation certificates
+  - an EVS, Eligibility Verification System
+  - a set of Compliance Rules
+
+## Technical Description
+
+A sample transaction has the following process:
+  - Transaction Initiation
+  - Validator Engagement
+  - Compliance and Eligibility Checks
+  - Evaluation of Transfer
+      - Check if the initiator has the necessary claims
+  - Transfer Execution or Rejection
+
+### Onchain identity system
+
+Main objectives:
+  - Store only validation certificates (claims) or use FHE and store everything on chain
+  - Contains a recovery function if user loses EOA
+
+### Certificate Validation
+
+### Eligibility Verification System
+
+### Comliance
+
+
+## Delivery vs Delivery Transfer Manager
+    - TODO p22
+
+
+## Hardhat Template [![Open in Gitpod][gitpod-badge]][gitpod] [![Github Actions][gha-badge]][gha] [![Hardhat][hardhat-badge]][hardhat] [![License: MIT][license-badge]][license]
 
 [gitpod]: https://gitpod.io/#https://github.com/zama-ai/fhevm-hardhat-template
 [gitpod-badge]: https://img.shields.io/badge/Gitpod-Open%20in%20Gitpod-FFB45B?logo=gitpod
