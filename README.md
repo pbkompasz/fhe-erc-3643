@@ -31,10 +31,20 @@ Main objectives:
 
 ### Comliance
 
-
 ## Delivery vs Delivery Transfer Manager
     - TODO p22
 
+## Confidential Variant
+
+The level of confidentiality for this standard can have various degrees:
+ - we can opt to keep the different actors anonymous
+ - keep each inverstor's bags confidential
+ - or keep the security that we want to deploy secret.
+This implementation is modular and allows for each implementation to choose which part remains open or closed. However to comply with ERC-3643 standard
+and the required regulations. To this there has to exist a system through which an authority has oversight over the whole system, for example
+it can authorize investors.
+
+## A confidential Delivery vs Delivery Transfer scenario
 
 ## Hardhat Template [![Open in Gitpod][gitpod-badge]][gitpod] [![Github Actions][gha-badge]][gha] [![Hardhat][hardhat-badge]][hardhat] [![License: MIT][license-badge]][license]
 
