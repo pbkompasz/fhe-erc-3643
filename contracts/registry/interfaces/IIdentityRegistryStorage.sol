@@ -2,7 +2,8 @@
 
 pragma solidity ^0.8.24;
 
-import "@onchain-id/solidity/contracts/interface/IIdentity.sol";
+import "fhevm/lib/TFHE.sol";
+import "../../identity/interfaces/IIdentity.sol";
 
 interface IIdentityRegistryStorage {
     /// events
@@ -13,7 +14,7 @@ interface IIdentityRegistryStorage {
      *  `investorAddress` is the address of the investor's wallet
      *  `identity` is the address of the Identity smart contract (onchainID)
      */
-    event IdentityStored(address indexed investorAddress, IIdentity indexed identity);
+    event IdentityStored(eaddress indexed investorAddress, IIdentity indexed identity);
 
     /**
      *  this event is emitted when an Identity is removed from the storage contract.
@@ -21,7 +22,7 @@ interface IIdentityRegistryStorage {
      *  `investorAddress` is the address of the investor's wallet
      *  `identity` is the address of the Identity smart contract (onchainID)
      */
-    event IdentityUnstored(address indexed investorAddress, IIdentity indexed identity);
+    event IdentityUnstored(eaddress indexed investorAddress, IIdentity indexed identity);
 
     /**
      *  this event is emitted when an Identity has been updated
@@ -37,7 +38,7 @@ interface IIdentityRegistryStorage {
      *  `investorAddress` is the address on which the country has been updated
      *  `country` is the numeric code (ISO 3166-1) of the new country
      */
-    event CountryModified(address indexed investorAddress, uint16 indexed country);
+    event CountryModified(eaddress indexed investorAddress, euint16 indexed country);
 
     /**
      *  this event is emitted when an Identity Registry is bound to the storage contract
@@ -64,7 +65,7 @@ interface IIdentityRegistryStorage {
      *  @param _country The country of the investor
      *  emits `IdentityStored` event
      */
-    function addIdentityToStorage(address _userAddress, IIdentity _identity, uint16 _country) external;
+    function addIdentityToStorage(eaddress _userAddress, IIdentity _identity, euint16 _country) external;
 
     /**
      *  @dev Removes an user from the storage.
@@ -73,7 +74,7 @@ interface IIdentityRegistryStorage {
      *  @param _userAddress The address of the user to be removed
      *  emits `IdentityUnstored` event
      */
-    function removeIdentityFromStorage(address _userAddress) external;
+    function removeIdentityFromStorage(eaddress _userAddress) external;
 
     /**
      *  @dev Updates the country corresponding to a user address.
@@ -83,7 +84,7 @@ interface IIdentityRegistryStorage {
      *  @param _country The new country of the user
      *  emits `CountryModified` event
      */
-    function modifyStoredInvestorCountry(address _userAddress, uint16 _country) external;
+    function modifyStoredInvestorCountry(eaddress _userAddress, euint16 _country) external;
 
     /**
      *  @dev Updates an identity contract corresponding to a user address.
@@ -94,7 +95,7 @@ interface IIdentityRegistryStorage {
      *  @param _identity The address of the user's new identity contract
      *  emits `IdentityModified` event
      */
-    function modifyStoredIdentity(address _userAddress, IIdentity _identity) external;
+    function modifyStoredIdentity(eaddress _userAddress, IIdentity _identity) external;
 
     /**
      *  @notice Adds an identity registry as agent of the Identity Registry Storage Contract.
@@ -122,11 +123,11 @@ interface IIdentityRegistryStorage {
      *  @dev Returns the onchainID of an investor.
      *  @param _userAddress The wallet of the investor
      */
-    function storedIdentity(address _userAddress) external view returns (IIdentity);
+    function storedIdentity(eaddress _userAddress) external view returns (IIdentity);
 
     /**
      *  @dev Returns the country code of an investor.
      *  @param _userAddress The wallet of the investor
      */
-    function storedInvestorCountry(address _userAddress) external view returns (uint16);
+    function storedInvestorCountry(eaddress _userAddress) external view returns (euint16);
 }

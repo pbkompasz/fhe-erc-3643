@@ -2,7 +2,7 @@
 
 pragma solidity ^0.8.24;
 
-import "../registry/IIdentityRegistry.sol";
+import "../registry/interfaces/IIdentityRegistry.sol";
 import "../compliance/ICompliance.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
@@ -373,7 +373,7 @@ interface IToken is IERC20 {
     /**
      *  @dev Returns the Compliance contract linked to the token
      */
-    function compliance() external view returns (IModularCompliance);
+    function compliance() external view returns (ICompliance);
 
     /**
      * @dev Returns true if the contract is paused, and false otherwise.

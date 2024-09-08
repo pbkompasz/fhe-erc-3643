@@ -1,7 +1,7 @@
 pragma solidity ^0.8.24;
 
 import "fhevm/lib/TFHE.sol";
-import "../../erc-734+735/interfaces/IIdentity.sol";
+import "../../identity/interfaces/IIdentity.sol";
 
 contract IRSStorage {
     /// @dev struct containing the identity contract and the country of the user
@@ -11,7 +11,7 @@ contract IRSStorage {
     }
 
     /// @dev mapping between a user address and the corresponding identity
-    mapping(address => Identity) internal _identities;
+    mapping(eaddress => Identity) internal _identities;
 
     /// @dev array of Identity Registries linked to this storage
     address[] internal _identityRegistries;

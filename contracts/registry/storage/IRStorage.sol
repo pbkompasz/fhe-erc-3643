@@ -1,9 +1,9 @@
 pragma solidity ^0.8.24;
 
 import "fhevm/lib/TFHE.sol";
-import "../IClaimTopicsRegistry.sol";
-import "../ITrustedIssuersRegistry.sol";
-import "../IIdentityRegistryStorage.sol";
+import "../interfaces/IClaimTopicsRegistry.sol";
+import "../interfaces/ITrustedIssuersRegistry.sol";
+import "../interfaces/IIdentityRegistryStorage.sol";
 
 contract IRStorage {
     /// @dev Address of the ClaimTopicsRegistry Contract

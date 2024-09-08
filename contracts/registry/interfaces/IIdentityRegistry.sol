@@ -2,12 +2,12 @@
 
 pragma solidity ^0.8.24;
 
+import "fhevm/lib/TFHE.sol";
 import "./ITrustedIssuersRegistry.sol";
-import "./IClaimTopicsRegistry.sol";
 import "./IIdentityRegistryStorage.sol";
-
-import "@onchain-id/solidity/contracts/interface/IClaimIssuer.sol";
-import "@onchain-id/solidity/contracts/interface/IIdentity.sol";
+import "./IClaimTopicsRegistry.sol";
+import "../../identity/interfaces/IClaimIssuer.sol";
+import "../../identity/interfaces/IIdentity.sol";
 
 interface IIdentityRegistry {
     /**
@@ -37,7 +37,7 @@ interface IIdentityRegistry {
      *  `investorAddress` is the address of the investor's wallet
      *  `identity` is the address of the Identity smart contract (onchainID)
      */
-    event IdentityRegistered(address indexed investorAddress, IIdentity indexed identity);
+    event IdentityRegistered(eaddress indexed investorAddress, IIdentity indexed identity);
 
     /**
      *  this event is emitted when an Identity is removed from the Identity Registry.
@@ -45,7 +45,7 @@ interface IIdentityRegistry {
      *  `investorAddress` is the address of the investor's wallet
      *  `identity` is the address of the Identity smart contract (onchainID)
      */
-    event IdentityRemoved(address indexed investorAddress, IIdentity indexed identity);
+    event IdentityRemoved(eaddress indexed investorAddress, IIdentity indexed identity);
 
     /**
      *  this event is emitted when an Identity has been updated
@@ -61,7 +61,7 @@ interface IIdentityRegistry {
      *  `investorAddress` is the address on which the country has been updated
      *  `country` is the numeric code (ISO 3166-1) of the new country
      */
-    event CountryUpdated(address indexed investorAddress, uint16 indexed country);
+    event CountryUpdated(eaddress indexed investorAddress, euint16 indexed country);
 
     /**
      *  @dev Register an identity contract corresponding to a user address.
@@ -72,7 +72,7 @@ interface IIdentityRegistry {
      *  @param _country The country of the investor
      *  emits `IdentityRegistered` event
      */
-    function registerIdentity(address _userAddress, IIdentity _identity, uint16 _country) external;
+    function registerIdentity(eaddress _userAddress, IIdentity _identity, euint16 _country) external;
 
     /**
      *  @dev Removes an user from the identity registry.
@@ -81,7 +81,7 @@ interface IIdentityRegistry {
      *  @param _userAddress The address of the user to be removed
      *  emits `IdentityRemoved` event
      */
-    function deleteIdentity(address _userAddress) external;
+    function deleteIdentity(eaddress _userAddress) external;
 
     /**
      *  @dev Replace the actual identityRegistryStorage contract with a new one.
@@ -115,7 +115,7 @@ interface IIdentityRegistry {
      *  @param _country The new country of the user
      *  emits `CountryUpdated` event
      */
-    function updateCountry(address _userAddress, uint16 _country) external;
+    function updateCountry(eaddress _userAddress, euint16 _country) external;
 
     /**
      *  @dev Updates an identity contract corresponding to a user address.
@@ -126,7 +126,7 @@ interface IIdentityRegistry {
      *  @param _identity The address of the user's new identity contract
      *  emits `IdentityUpdated` event
      */
-    function updateIdentity(address _userAddress, IIdentity _identity) external;
+    function updateIdentity(eaddress _userAddress, IIdentity _identity) external;
 
     /**
      *  @dev function allowing to register identities in batch
@@ -142,7 +142,7 @@ interface IIdentityRegistry {
     function batchRegisterIdentity(
         address[] calldata _userAddresses,
         IIdentity[] calldata _identities,
-        uint16[] calldata _countries
+        euint16[] calldata _countries
     ) external;
 
     /**
@@ -151,7 +151,7 @@ interface IIdentityRegistry {
      *  @param _userAddress The address of the user to be checked.
      *  @return 'True' if the address is contained in the Identity Registry, 'false' if not.
      */
-    function contains(address _userAddress) external view returns (bool);
+    function contains(eaddress _userAddress) external view returns (bool);
 
     /**
      *  @dev This functions checks whether an identity contract
@@ -160,19 +160,21 @@ interface IIdentityRegistry {
      *  @param _userAddress The address of the user to be verified.
      *  @return 'True' if the address is verified, 'false' if not.
      */
-    function isVerified(address _userAddress) external view returns (bool);
+    function isVerified(eaddress _userAddress) external view returns (bool);
 
     /**
      *  @dev Returns the onchainID of an investor.
      *  @param _userAddress The wallet of the investor
      */
     function identity(address _userAddress) external view returns (IIdentity);
+    function identity(eaddress _userAddress) external view returns (IIdentity);
 
     /**
      *  @dev Returns the country code of an investor.
      *  @param _userAddress The wallet of the investor
      */
     function investorCountry(address _userAddress) external view returns (uint16);
+    function investorCountry(eaddress _userAddress) external view returns (euint16);
 
     /**
      *  @dev Returns the IdentityRegistryStorage linked to the current IdentityRegistry.

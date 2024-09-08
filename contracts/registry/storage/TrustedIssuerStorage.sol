@@ -1,12 +1,13 @@
 pragma solidity ^0.8.24;
 
 import "fhevm/lib/TFHE.sol";
-import "../../erc-734+735/interfaces/IClaimIssuer.sol";
+import "../../identity/interfaces/IClaimIssuer.sol";
 
 contract TrustedIssuerStorage {
     /// @dev Array containing all TrustedIssuers identity contract address.
     IClaimIssuer[] internal _trustedIssuers;
 
+    // TODO This doesn't have to be fhe
     /// @dev Mapping between a trusted issuer address and its corresponding claimTopics.
     mapping(address => euint4[]) internal _trustedIssuerClaimTopics;
 

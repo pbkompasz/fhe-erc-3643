@@ -2,6 +2,8 @@
 
 pragma solidity ^0.8.24;
 
+import "fhevm/lib/TFHE.sol";
+
 interface ICompliance {
     /**
      *  this event is emitted when the Agent has been added on the allowedList of this Compliance.
@@ -71,6 +73,7 @@ interface ICompliance {
      *  @param _amount The amount of tokens involved in the transfer
      */
     function transferred(address _from, address _to, uint256 _amount) external;
+    function transferred(eaddress _from, eaddress _to, euint32 _amount) external;
 
     /**
      *  @dev function called whenever tokens are created
@@ -83,6 +86,7 @@ interface ICompliance {
      *  @param _amount The amount of tokens involved in the transfer
      */
     function created(address _to, uint256 _amount) external;
+    function created(eaddress _to, euint32 _amount) external;
 
     /**
      *  @dev function called whenever tokens are destroyed
@@ -94,6 +98,7 @@ interface ICompliance {
      *  @param _amount The amount of tokens involved in the transfer
      */
     function destroyed(address _from, uint256 _amount) external;
+    function destroyed(eaddress _from, euint32 _amount) external;
 
     /**
      *  @dev Returns true if the Address is in the list of token agents
@@ -117,4 +122,5 @@ interface ICompliance {
      *  @param _amount The amount of tokens involved in the transfer
      */
     function canTransfer(address _from, address _to, uint256 _amount) external view returns (bool);
+    function canTransfer(eaddress _from, eaddress _to, euint32 _amount) external returns (ebool);
 }
