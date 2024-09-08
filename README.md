@@ -1,50 +1,81 @@
 # ERC-3643
 
-## 
+![ERC-3643](./images/erc-3643.png)
 
-The ERC-3643 token standard supports the compliant issuance and management of permissioned tokens. These tokens are issued in full compliance with the rules specified by the investors (via on-chain identity) and the offerings based on issuers' guidelines. Furthermore, control mechanisms are baked into the tokens themselves.  
-The transaction of tokenized securities and enforcement of compliance on the happens through a decentralized validator, consisting of the following parts:
-  - an identity management system
-  - a set of validation certificates
-  - an EVS, Eligibility Verification System
-  - a set of Compliance Rules
+The ERC-3643 token standard enables compliant issuance and management of permissioned tokens. These tokens are issued in accordance with investor rules (via on-chain identity) and follow guidelines established by issuers. Additionally, control mechanisms are embedded directly into the tokens.
 
-## Technical Description
-
-A sample transaction has the following process:
-  - Transaction Initiation
-  - Validator Engagement
-  - Compliance and Eligibility Checks
-  - Evaluation of Transfer
-      - Check if the initiator has the necessary claims
-  - Transfer Execution or Rejection
+The transaction of tokenized securities and enforcement of compliance are facilitated by a decentralized validator system, which includes the following components:
+- An identity management system
+- A set of validation certificates
+- An Eligibility Verification System (EVS)
+- A set of compliance rules
 
 ### Onchain identity system
 
-Main objectives:
-  - Store only validation certificates (claims) or use FHE and store everything on chain
-  - Contains a recovery function if user loses EOA
+Main Objectives:
+  - Store only validation certificates (claims) or use Fully Homomorphic Encryption (FHE) to store everything on-chain.
+  - Include a recovery function if the user loses their externally owned account (EOA).
 
-### Certificate Validation
-
-### Eligibility Verification System
-
-### Comliance
-
-## Delivery vs Delivery Transfer Manager
-    - TODO p22
+This implementation replaces the key storage from the original approach with on-chain verification and modular claims. For example, a module like KYCClaim.sol could expect personal information (e.g., first name, last name, country, email) and a trusted issuer to verify the claim.
+An enhancement could allow verifiers to develop and submit their own confidential verification modules by providing their contract address as the verification scheme. Currently, the implementation includes only a single KYC module
 
 ## Confidential Variant
 
-The level of confidentiality for this standard can have various degrees:
- - we can opt to keep the different actors anonymous
- - keep each inverstor's bags confidential
- - or keep the security that we want to deploy secret.
-This implementation is modular and allows for each implementation to choose which part remains open or closed. However to comply with ERC-3643 standard
-and the required regulations. To this there has to exist a system through which an authority has oversight over the whole system, for example
-it can authorize investors.
+Degrees of confidentiality in this standard:
+  - Investors can remain anonymous.
+  - The size of each investor's holdings can be kept confidential.
+  - The level of security deployed can be kept secret.
+This implementation is modular, allowing flexibility in choosing which parts remain open or confidential. However, to comply with the ERC-3643 standard and regulatory requirements, there must be a system where claim issuers or verifiers have oversight. For example, they may need the ability to authorize investors.
+
+## FHE improvements
+
+A "trick" to save one or more decryption:
+The original transfer method look like the following:
+```solidity
+function transfer(address _to, uint256 _amount) public override whenNotPaused returns (bool) {
+        require(!_frozen[_to] && !_frozen[msg.sender], "wallet is frozen");
+        require(_amount <= balanceOf(msg.sender) - (_frozenTokens[msg.sender]), "Insufficient Balance");
+        if (_tokenIdentityRegistry.isVerified(_to) && _tokenCompliance.canTransfer(msg.sender, _to, _amount)) {
+            _transfer(msg.sender, _to, _amount);
+            _tokenCompliance.transferred(msg.sender, _to, _amount);
+            return true;
+        }
+        revert("Transfer not possible");
+    }
+```
+To rewrite this in a confidential way, we would have to store each requirement condition in an `ebool`, decrypt it and break the function into multiple stages, given that the decryption step is asynchronous.
+
+A more efficient solution:
+  1. Create a selectors array, with the correct transfer function and a function that reject the transaction
+  ```solidity
+    mapping(euint4 => bytes4) private selectors;
+    // ...
+    bytes4 revertSelector = bytes4(keccak256(bytes("_revertTransferEncrypted")));
+    bytes4 transferSelector = bytes4(keccak256(bytes("_transferEncrypted")));
+
+    selectors[ONE] = revertSelector;
+    selectors[ZERO] = revertSelector;
+    ...
+  ```
+  2. Using `TFHE.select` we place the correct function selector in the first place if the condition passes
+  ```solidity
+    ebool isRevertable = TFHE.and(TFHE.not(_frozenEncrypted[_to]), TFHE.not(_frozenEncrypted[from]));
+    euint4 pos = TFHE.select(isRevertable, ONE, ZERO);
+    selectors[pos] = transferSelector;
+    revertMessage = "wallet is frozen";
+  ```
+  3. Called the function at the first place, which is either the transfer function or the reject function
+  ```solidity
+    (bool success, ) = address(this).call(abi.encodeWithSelector(selectors[ONE]));
+    require(success, "Function call failed");
+  ```
 
 ## A confidential Delivery vs Delivery Transfer scenario
+
+![DVD](./images/dvd.png)
+Key differences between a standard DVD transfer and its confidential variant:
+  - In the confidential variant, each investor signs up to a list and submits a request for the number of tokens they wish to transfer.
+  - The allowance of tokens to be exchanged remains secret.
 
 ## Hardhat Template [![Open in Gitpod][gitpod-badge]][gitpod] [![Github Actions][gha-badge]][gha] [![Hardhat][hardhat-badge]][hardhat] [![License: MIT][license-badge]][license]
 
