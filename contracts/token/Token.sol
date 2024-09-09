@@ -10,27 +10,6 @@ import "./ConfidentialTokenStorage.sol";
 import "../compliance/ICompliance.sol";
 import "../roles/AgentRole.sol";
 
-// TODO
-// Write identity and claim manager test
-// Write confidential and non-confidential registries
-// Finish up with token
-// Compliance test
-// Compliance module
-// Cleanup README mentioned the two registries
-// look into allow
-
-// 0 - Plaintext everything
-// 1 - Confidential investors
-// 2 - Confidential compliance
-// 3 - Confidential everything
-
-// How it works
-// Create identity for investorA, investorB and claim issuer
-// Do KYC and claim issuer issues claims for invA and invB
-// Investors authorizes identity ???
-// Setup compliance module for asset
-// Do a test transfer
-
 abstract contract SecurityToken is IToken, Ownable, TokenStorage, ConfidentialTokenStorage, AgentRole {
     bool isConfidential;
     mapping(euint4 => bytes4) private selectors;
